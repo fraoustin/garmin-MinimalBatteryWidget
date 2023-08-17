@@ -1,0 +1,5 @@
+# ignore debug file
+*.debug.xml
+/bin
+# ignore specific file
+.nogit

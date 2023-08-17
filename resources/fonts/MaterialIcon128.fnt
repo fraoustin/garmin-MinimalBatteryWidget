@@ -1,0 +1,14 @@
+info face="Material Icons" size=128 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1 outline=0
+common lineHeight=128 base=128 scaleW=256 scaleH=256 pages=2 packed=0 alphaChnl=1 redChnl=0 greenChnl=0 blueChnl=0
+page id=0 file="MaterialIcon128_0.png"
+page id=1 file="MaterialIcon128_1.png"
+chars count=9
+char id=48   x=0     y=0     width=56    height=108   xoffset=36    yoffset=10    xadvance=128   page=0  chnl=15
+char id=55   x=57    y=0     width=56    height=108   xoffset=36    yoffset=10    xadvance=128   page=0  chnl=15
+char id=54   x=114   y=0     width=56    height=108   xoffset=36    yoffset=10    xadvance=128   page=0  chnl=15
+char id=53   x=171   y=0     width=56    height=108   xoffset=36    yoffset=10    xadvance=128   page=0  chnl=15
+char id=49   x=0     y=109   width=56    height=108   xoffset=36    yoffset=10    xadvance=128   page=0  chnl=15
+char id=47   x=57    y=109   width=56    height=108   xoffset=36    yoffset=10    xadvance=128   page=0  chnl=15
+char id=51   x=114   y=109   width=56    height=108   xoffset=36    yoffset=10    xadvance=128   page=0  chnl=15
+char id=50   x=171   y=109   width=56    height=108   xoffset=36    yoffset=10    xadvance=128   page=0  chnl=15
+char id=52   x=0     y=0     width=56    height=108   xoffset=36    yoffset=10    xadvance=128   page=1  chnl=15
