@@ -2,5 +2,7 @@
     <fonts>
         <font id="BoldFont" filename="fonts/TitilliumSemiBold48.fnt" antialias="true"/>
         <font id="MaterialFont" filename="fonts/MaterialIcon128.fnt" antialias="true"/>
+        <font id="BoldFont" scope="glance" filename="fonts/TitilliumSemiBold48.fnt" antialias="true"/>
+        <font id="MaterialFont" scope="glance" filename="fonts/MaterialIcon128.fnt" antialias="true"/>
     </fonts>
 </resources>

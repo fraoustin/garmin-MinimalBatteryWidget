@@ -27,12 +27,18 @@ class MinimalBatteryWidgetView extends WatchUi.View {
     function onUpdate(dc as Dc) as Void {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
-        var colorDark = Graphics.COLOR_DK_GREEN;
-        if (System.getSystemStats().battery <= 20) {
-            colorDark = Graphics.COLOR_ORANGE;
+        var color = Graphics.COLOR_LT_GRAY;      
+        if (System.getSystemStats().battery <= 80) {
+            color = Graphics.COLOR_BLUE;
         }
-        if (System.getSystemStats().battery <= 10) {
-            colorDark = Graphics.COLOR_DK_RED;
+        if (System.getSystemStats().battery <= 60) {
+            color = Graphics.COLOR_GREEN;
+        }
+        if (System.getSystemStats().battery <= 40) {
+            color = Graphics.COLOR_ORANGE;
+        }
+        if (System.getSystemStats().battery <= 20) {
+            color = Graphics.COLOR_RED;
         }
         var batteryString = Lang.format("$1$%", [System.getSystemStats().battery.format("%d"), ]);
         var batteryView = View.findDrawableById("BatteryLabel") as Text;
@@ -43,16 +49,16 @@ class MinimalBatteryWidgetView extends WatchUi.View {
         batteryValue.setLocation(dc.getWidth()/2, dc.getHeight()*1/24);
         batteryValue.setText(batteryString);
         batteryView.setText("1"); 
-        batteryView.setColor(colorDark);
-        batteryValue.setColor(colorDark);
-        dc.setColor(colorDark, Graphics.COLOR_TRANSPARENT);
+        batteryView.setColor(color);
+        batteryValue.setColor(color);
+        dc.setColor(color, Graphics.COLOR_TRANSPARENT);
         dc.setPenWidth(3);
         dc.drawArc(dc.getWidth()/2, dc.getHeight()/2, dc.getHeight()/2-dc.getHeight()*1/8, Graphics.ARC_COUNTER_CLOCKWISE, 90+25, 90+45);
         dc.drawArc(dc.getWidth()/2, dc.getHeight()/2, dc.getHeight()/2-dc.getHeight()*1/8, Graphics.ARC_COUNTER_CLOCKWISE, 90-45, 90-25);
         if (System.getSystemStats().battery <= 5) {
             batteryView.setText("0");
         } else {
-            dc.setColor(colorDark, colorDark);
+            dc.setColor(color, color);
             dc.setPenWidth(1);
             var bloc = [20, 40, 60, 80, 100];
             var x = dc.getWidth()/2 -14;

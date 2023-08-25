@@ -2,6 +2,10 @@
 
 ![logo](logofull.png "logo")
 
+Glance view
+
+![classic](battery_glances.png "glance view")
+
 A specific miniaml widget for read a battery level
 
 ![classic](battery_high.png "classic view")

@@ -21,6 +21,11 @@ class MinimalBatteryWidgetApp extends Application.AppBase {
         return [ new MinimalBatteryWidgetView() ] as Array<Views or InputDelegates>;
     }
 
+    // Return the glance view of your application here
+    function getGlanceView() {
+        return [ new WidgetGlanceView() ];
+    }
+
 }
 
 function getApp() as MinimalBatteryWidgetApp {
