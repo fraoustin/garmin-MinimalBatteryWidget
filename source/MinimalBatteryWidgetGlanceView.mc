@@ -6,7 +6,7 @@ import Toybox.System;
 (:glance)
 class WidgetGlanceView extends Ui.GlanceView {
 	
-    const BoldFont = Application.loadResource(Rez.Fonts.BoldFont);
+    const BoldFont = Application.loadResource(Rez.Fonts.BoldFontGlances);
 
     function initialize() {
       GlanceView.initialize();
@@ -28,6 +28,6 @@ class WidgetGlanceView extends Ui.GlanceView {
           color = Graphics.COLOR_RED;
       }
       dc.setColor(color, Graphics.COLOR_TRANSPARENT);
-      dc.drawText(0, dc.getHeight()/2 -24, BoldFont, batteryString, Graphics.TEXT_JUSTIFY_LEFT);
+      dc.drawText(0, dc.getHeight()/2 -32, BoldFont, batteryString, Graphics.TEXT_JUSTIFY_LEFT);
     }
 }
