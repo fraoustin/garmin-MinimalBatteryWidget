@@ -1,5 +1,10 @@
 info face="Material Icons" size=48 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1 outline=0
 common lineHeight=48 base=48 scaleW=256 scaleH=256 pages=1 packed=0 alphaChnl=1 redChnl=0 greenChnl=0 blueChnl=0
 page id=0 file="MaterialIcon48_0.png"
-chars count=1
-char id=49 x=0     y=0     width=22    height=40    xoffset=13    yoffset=4     xadvance=48    page=0  chnl=15
+chars count=6
+char id=49 x=0     y=0     width=34    height=43    xoffset=5     yoffset=3     xadvance=48    page=0  chnl=15
+char id=50 x=35    y=0     width=34    height=43    xoffset=7     yoffset=1     xadvance=48    page=0  chnl=15
+char id=52 x=93    y=0     width=42    height=38    xoffset=3     yoffset=6     xadvance=48    page=0  chnl=15
+char id=54 x=179   y=0     width=22    height=36    xoffset=13    yoffset=6     xadvance=48    page=0  chnl=15
+char id=53 x=136   y=0     width=42    height=36    xoffset=3     yoffset=6     xadvance=48    page=0  chnl=15
+char id=51 x=70    y=0     width=22    height=40    xoffset=13    yoffset=4     xadvance=48    page=0  chnl=15

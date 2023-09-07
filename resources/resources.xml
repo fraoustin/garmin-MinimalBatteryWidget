@@ -1,7 +1,6 @@
 <resources>
     <fonts>
-        <font id="BoldFont" filename="fonts/TitilliumSemiBold128.fnt" antialias="true"/>
+        <font id="BoldFont" filename="fonts/TitilliumSemiBold96.fnt" antialias="true"/>
         <font id="LogoFont" filename="fonts/MaterialIcon48.fnt" antialias="true"/>
-        <font id="BoldFontGlances" scope="glance" filename="fonts/TitilliumSemiBold64.fnt" antialias="true"/>
     </fonts>
 </resources>

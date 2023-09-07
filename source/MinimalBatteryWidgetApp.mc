@@ -1,6 +1,7 @@
 import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Graphics;
 
 class MinimalBatteryWidgetApp extends Application.AppBase {
 
@@ -18,12 +19,7 @@ class MinimalBatteryWidgetApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as Array<Views or InputDelegates>? {
-        return [ new MinimalBatteryWidgetView() ] as Array<Views or InputDelegates>;
-    }
-
-    // Return the glance view of your application here
-    function getGlanceView() {
-        return [ new WidgetGlanceView() ];
+        return [ new MinimalBatteryView(), new BaseInputDelegate() ] as Array<Views or InputDelegates>;
     }
 
 }
