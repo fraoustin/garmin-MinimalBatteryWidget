@@ -4,14 +4,34 @@ import Toybox.System;
 import Toybox.WatchUi;
 using Toybox.ActivityMonitor;
 using Toybox.SensorHistory;
+using Toybox.UserProfile;
 
-function getIterator() {
+function getIteratorBb() {
     // Check device for SensorHistory compatibility
     if ((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getBodyBatteryHistory)) {
         // Set up the method with parameters
-        return Toybox.SensorHistory.getBodyBatteryHistory({});
+        return Toybox.SensorHistory.getBodyBatteryHistory({:period => 1000});
     }
     return null;
+}
+
+function getIteratorHeart() {
+    // Check device for SensorHistory compatibility
+    if ((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getHeartRateHistory)) {
+        return Toybox.SensorHistory.getHeartRateHistory({:period => 2000});
+    }
+    return null;
+}
+
+function getColor(value as Float, colors as Array){
+    var color = colors[0][1];
+    for( var i = 0; i < colors.size(); i += 1 ) {
+        if ( value <= colors[i][0]){
+            color = colors[i][1];
+        }
+    }
+    return color;
+
 }
 
 class MinimalView extends WatchUi.View {
@@ -29,7 +49,7 @@ class MinimalView extends WatchUi.View {
         setLayout(Rez.Layouts.MainLayout(dc));
     }
 
-    function viewMonitor(dc as Dc, unit as Text, value as Float, str as Text, color as Graphics.ColorValue, logo as Text) as Void {
+    function viewMonitor(dc as Dc, unit as Text, value as Float, str as Text, color as Graphics.ColorValue, logo as Text, table as Array) as Void {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         var sizeFont = Graphics.getFontHeight(BoldFont);
         var sizeFontUnit = Graphics.getFontHeight(TinyFont);
@@ -38,7 +58,12 @@ class MinimalView extends WatchUi.View {
         dc.drawText(dc.getWidth() -22, dc.getHeight()/2 +25, TinyFont, unit, Graphics.TEXT_JUSTIFY_RIGHT);
         dc.setColor(color, Graphics.COLOR_TRANSPARENT);
         dc.drawText(dc.getWidth()*1/4, dc.getHeight()/2 - (sizeFontLogo/2), LogoFont, logo, Graphics.TEXT_JUSTIFY_CENTER);
-        lineColor(dc, color, value, 270, Math.toDegrees(Math.asin((sizeFont/2 -20) *1.0/ (dc.getHeight()/2 -15))), dc.getHeight()/2 -15, 10);
+        if (table.size() == 0) {
+            lineColor(dc, color, value, 270, Math.toDegrees(Math.asin((sizeFont/2 -20) *1.0/ (dc.getHeight()/2 -15))), dc.getHeight()/2 -15, 10);
+        } else {
+            lineColor(dc, color, value, 180, Math.toDegrees(Math.asin((sizeFont/2 -20) *1.0/ (dc.getHeight()/2 -15))), dc.getHeight()/2 -15, 10);
+            drawGraph(dc, dc.getWidth()/4, dc.getHeight()* 5/8, dc.getWidth()/2, dc.getHeight()* 1/4, table, 0, 100);
+        }
     }
 
     function lineColor(dc as Dc, color as Graphics.ColorValue, value as Float, start as Decimal, end as Decimal, level as Number, penWidth as Number) as Void {
@@ -58,6 +83,22 @@ class MinimalView extends WatchUi.View {
             dc.fillCircle(Math.cos(Math.toRadians(start))*level + dc.getWidth()/2, Math.sin(Math.toRadians(start))*level*-1 + dc.getHeight()/2, penWidth/2 -1);
             dc.fillCircle(Math.cos(Math.toRadians(end))*level + dc.getWidth()/2, Math.sin(Math.toRadians(end))*level*-1 + dc.getHeight()/2, penWidth/2 -1);
         }
+    }
+
+    function drawGraph(dc as Dc, x as Lang.Numeric, y as Lang.Numeric, width as Lang.Numeric, height as Lang.Numeric, datas as Array, min as Lang.Numeric, max as Lang.Numeric) as Void {
+        var level = height * 1.00 / (max - min);
+        var pos = x + width;
+        dc.setPenWidth(2);
+        for( var i = 1; i < datas.size(); i += 1 ) {
+            dc.setColor(datas[i][1], Graphics.COLOR_TRANSPARENT);
+            pos = pos -1;
+            if (pos >= x) {
+                dc.drawLine(pos +1, y + height -(datas[i-1][0] - min) * level, pos, y + height -(datas[i][0] - min) * level);
+            }
+        }
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawLine(x, y + height, x+width, y + height );
+
     }
 
 }
@@ -83,7 +124,7 @@ class MinimalBatteryView extends MinimalView {
         var unit = "%";
         var logo = "3";
         View.onUpdate(dc);
-        viewMonitor(dc, unit, value, str, color, logo);
+        viewMonitor(dc, unit, value, str, color, logo, []);
     }
 
 }
@@ -104,7 +145,7 @@ class MinimalCalView extends MinimalView {
         var unit = "kCal";
         var logo = "2";
         View.onUpdate(dc);
-        viewMonitor(dc, unit, value, str, color, logo);
+        viewMonitor(dc, unit, value, str, color, logo, []);
     }
 
 }
@@ -119,18 +160,33 @@ class MinimalBbView extends MinimalView {
     function onUpdate(dc as Dc) as Void {
         // Call the parent onUpdate function to redraw the layout
 
-        var bbIterator = getIterator();
+        var bbIterator = getIteratorBb();
         var sampleBb = bbIterator.next();
         var value = 0;
         if (sampleBb != null) {
             value = sampleBb.data;
         }
         var str = Lang.format("$1$", [value.format("%d"),]);
+        var array = [];
+        var item = 0;
         var color = Graphics.COLOR_BLUE;
+        var colors = [[100, Graphics.COLOR_BLUE], [80, Graphics.COLOR_GREEN], [40, Graphics.COLOR_YELLOW], [20, Graphics.COLOR_ORANGE], [10, Graphics.COLOR_RED]];
+        while (sampleBb != null) {
+            if (item % 3== 0) {
+                try {
+                    array.add([sampleBb.data, getColor(sampleBb.data, colors)]);
+                }
+                catch( ex ) {
+                    array.add([0, getColor(0, colors)]);
+                }
+            }
+            sampleBb = bbIterator.next();
+            item = item +1;
+        }
         var unit = "%";
         var logo = "6";
         View.onUpdate(dc);
-        viewMonitor(dc, unit, value, str, color, logo);
+        viewMonitor(dc, unit, value, str, color, logo, array);
     }
 
 }
@@ -151,7 +207,7 @@ class MinimalActiveMinuteView extends MinimalView {
         var unit = "min";
         var logo = "1";
         View.onUpdate(dc);
-        viewMonitor(dc, unit, value, str, color, logo);
+        viewMonitor(dc, unit, value, str, color, logo, []);
     }
 }
 
@@ -172,7 +228,7 @@ class MinimalStepView extends MinimalView {
         var unit = "Km";
         var logo = "4";
         View.onUpdate(dc);
-        viewMonitor(dc, unit, value, str, color, logo);
+        viewMonitor(dc, unit, value, str, color, logo, []);
     }
 }
 
@@ -187,6 +243,8 @@ class MinimalHeartiew extends MinimalView {
         // Call the parent onUpdate function to redraw the layout
         var info = Activity.getActivityInfo();
         var valueHeart = info.currentHeartRate;
+        //var heartIterator = getIteratorHeart();
+        //var valueHeart = heartIterator.next();
         var str = valueHeart;
         var value = valueHeart;
         if (valueHeart == null){
@@ -196,9 +254,27 @@ class MinimalHeartiew extends MinimalView {
             value = valueHeart /2; //max heart 200 bpm        
         }
         var color = Graphics.COLOR_RED;
+        var heartIterator = getIteratorHeart();
+        valueHeart = heartIterator.next();
+        var array = [];
+        var item = 0;
+        var heartRateZones = UserProfile.getHeartRateZones(0);
+        var colors = [[heartRateZones[4], Graphics.COLOR_RED], [heartRateZones[3], Graphics.COLOR_ORANGE], [heartRateZones[2], Graphics.COLOR_GREEN], [70, Graphics.COLOR_BLUE], [50, Graphics.COLOR_LT_GRAY]];
+        while (valueHeart != null) {
+            if (item % 3 == 0) {
+                try {
+                    array.add([valueHeart.data/2, getColor(valueHeart.data, colors)]); //max heart 200 bpm  
+                }
+                catch( ex ) {
+                    array.add([0, getColor(0, colors)]);
+                }
+            }
+            valueHeart = heartIterator.next();
+            item = item +1;
+        }
         var unit = "Bpm";
         var logo = "5";
         View.onUpdate(dc);
-        viewMonitor(dc, unit, value, str, color, logo);
+        viewMonitor(dc, unit, value, str, color, logo, array);
     }
 }

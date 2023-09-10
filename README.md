@@ -1,7 +1,19 @@
-# Minimal Battery Widget for Garmin forerunner
+# Minimal Data Widget for Garmin forerunner
 
-todo
+View data value of parameter
 
+- Heart
+- Battery Body
+- Calorie
+- Active minute of week
+- Distance
+- Battery
+
+![classic](battery.png "battery view")
+
+![classic](heart.png "heart view")
+
+with heart and battery body we have a graphic
 
 ## Installation
 
