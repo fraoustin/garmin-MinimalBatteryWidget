@@ -8,7 +8,7 @@ using Toybox.WatchUi;
 using Toybox.System;
 
 var page = 1;
-var pages = [MinimalBatteryView, MinimalCalView, MinimalBbView, MinimalActiveMinuteView, MinimalStepView, MinimalHeartiew,  ];
+var pages = [MinimalBatteryView, MinimalCalView, MinimalBbView, MinimalActiveMinuteView, MinimalStepView, MinimalHeartiew, ];
 
 class BaseInputDelegate extends WatchUi.BehaviorDelegate {
 

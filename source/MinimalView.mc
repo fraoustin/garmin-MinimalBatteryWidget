@@ -88,7 +88,7 @@ class MinimalView extends WatchUi.View {
     function drawGraph(dc as Dc, x as Lang.Numeric, y as Lang.Numeric, width as Lang.Numeric, height as Lang.Numeric, datas as Array, min as Lang.Numeric, max as Lang.Numeric) as Void {
         var level = height * 1.00 / (max - min);
         var pos = x + width;
-        dc.setPenWidth(2);
+        dc.setPenWidth(4);
         for( var i = 1; i < datas.size(); i += 1 ) {
             dc.setColor(datas[i][1], Graphics.COLOR_TRANSPARENT);
             pos = pos -1;
