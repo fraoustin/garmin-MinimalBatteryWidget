@@ -17,5 +17,5 @@ with heart and battery body we have a graphic
 
 ## Installation
 
-copy of Build/MyMinimalFaceMinimalBatteryWidget.prg in your watch (/GARMIN/APPS/)
+copy of Build/MyMinimalFaceMinimalDataWidget.prg in your watch (/GARMIN/APPS/)
 

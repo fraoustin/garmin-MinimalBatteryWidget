@@ -3,7 +3,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
 
-class MinimalBatteryWidgetApp extends Application.AppBase {
+class MinimalDataWidgetApp extends Application.AppBase {
 
     function initialize() {
         AppBase.initialize();
@@ -24,6 +24,6 @@ class MinimalBatteryWidgetApp extends Application.AppBase {
 
 }
 
-function getApp() as MinimalBatteryWidgetApp {
-    return Application.getApp() as MinimalBatteryWidgetApp;
+function getApp() as MinimalDataWidgetApp {
+    return Application.getApp() as MinimalDataWidgetApp;
 }
