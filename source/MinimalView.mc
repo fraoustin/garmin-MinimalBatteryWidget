@@ -92,12 +92,13 @@ class MinimalView extends WatchUi.View {
         for( var i = 1; i < datas.size(); i += 1 ) {
             dc.setColor(datas[i][1], Graphics.COLOR_TRANSPARENT);
             pos = pos -1;
-            if (pos >= x) {
-                dc.drawLine(pos +1, y + height -(datas[i-1][0] - min) * level, pos, y + height -(datas[i][0] - min) * level);
+            if (datas[i-1][0] != null and datas[i][0] != null) {
+                if (pos >= x) {
+                    dc.drawLine(pos +1, y + height -(datas[i-1][0] - min) * level, pos, y + height -(datas[i][0] - min) * level);
+                }
             }
         }
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawLine(x, y + height, x+width, y + height );
 
     }
 
@@ -177,7 +178,7 @@ class MinimalBbView extends MinimalView {
                     array.add([sampleBb.data, getColor(sampleBb.data, colors)]);
                 }
                 catch( ex ) {
-                    array.add([0, getColor(0, colors)]);
+                    array.add([null, getColor(0, colors)]);
                 }
             }
             sampleBb = bbIterator.next();
@@ -260,13 +261,14 @@ class MinimalHeartiew extends MinimalView {
         var item = 0;
         var heartRateZones = UserProfile.getHeartRateZones(0);
         var colors = [[heartRateZones[4], Graphics.COLOR_RED], [heartRateZones[3], Graphics.COLOR_ORANGE], [heartRateZones[2], Graphics.COLOR_GREEN], [70, Graphics.COLOR_BLUE], [50, Graphics.COLOR_LT_GRAY]];
+        var delta = (heartRateZones[5] -20) /100;
         while (valueHeart != null) {
             if (item % 3 == 0) {
                 try {
-                    array.add([valueHeart.data/2, getColor(valueHeart.data, colors)]); //max heart 200 bpm  
+                    array.add([(valueHeart.data -20)/delta, getColor(valueHeart.data, colors)]); //max heart 200 bpm  
                 }
                 catch( ex ) {
-                    array.add([0, getColor(0, colors)]);
+                    array.add([null, getColor(0, colors)]);
                 }
             }
             valueHeart = heartIterator.next();
