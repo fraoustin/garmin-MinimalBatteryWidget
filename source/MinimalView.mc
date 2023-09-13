@@ -108,7 +108,7 @@ class MinimalView extends WatchUi.View {
             }
         }
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(x, y , TinyFont, maxminvalue[0][1], Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(x, y -10 , TinyFont, maxminvalue[0][1], Graphics.TEXT_JUSTIFY_RIGHT);
         dc.drawText(x, y +height -20, TinyFont, maxminvalue[1][1], Graphics.TEXT_JUSTIFY_RIGHT);
     }
 
