@@ -10,7 +10,7 @@ function getIteratorBb() {
     // Check device for SensorHistory compatibility
     if ((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getBodyBatteryHistory)) {
         // Set up the method with parameters
-        return Toybox.SensorHistory.getBodyBatteryHistory({:period => 1000});
+        return Toybox.SensorHistory.getBodyBatteryHistory({:period => 400});
     }
     return null;
 }
@@ -18,7 +18,7 @@ function getIteratorBb() {
 function getIteratorHeart() {
     // Check device for SensorHistory compatibility
     if ((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getHeartRateHistory)) {
-        return Toybox.SensorHistory.getHeartRateHistory({:period => 2000});
+        return Toybox.SensorHistory.getHeartRateHistory({:period => 250});
     }
     return null;
 }
@@ -88,18 +88,28 @@ class MinimalView extends WatchUi.View {
     function drawGraph(dc as Dc, x as Lang.Numeric, y as Lang.Numeric, width as Lang.Numeric, height as Lang.Numeric, datas as Array, min as Lang.Numeric, max as Lang.Numeric) as Void {
         var level = height * 1.00 / (max - min);
         var pos = x + width;
+        var maxminvalue = [[0, ""], [100, ""]];
         dc.setPenWidth(4);
         for( var i = 1; i < datas.size(); i += 1 ) {
-            dc.setColor(datas[i][1], Graphics.COLOR_TRANSPARENT);
             pos = pos -1;
             if (datas[i-1][0] != null and datas[i][0] != null) {
+                dc.setColor(datas[i][1], Graphics.COLOR_TRANSPARENT);
                 if (pos >= x) {
                     dc.drawLine(pos +1, y + height -(datas[i-1][0] - min) * level, pos, y + height -(datas[i][0] - min) * level);
                 }
+                if (datas[i][0] > maxminvalue[0][0]){
+                    maxminvalue[0][0] = datas[i][0];
+                    maxminvalue[0][1] = datas[i][2];
+                }
+                if (datas[i][0] < maxminvalue[1][0]){
+                    maxminvalue[1][0] = datas[i][0];
+                    maxminvalue[1][1] = datas[i][2];
+                }
             }
         }
-        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(x, y , TinyFont, maxminvalue[0][1], Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(x, y +height -20, TinyFont, maxminvalue[1][1], Graphics.TEXT_JUSTIFY_RIGHT);
     }
 
 }
@@ -175,10 +185,10 @@ class MinimalBbView extends MinimalView {
         while (sampleBb != null) {
             if (item % 3== 0) {
                 try {
-                    array.add([sampleBb.data, getColor(sampleBb.data, colors)]);
+                    array.add([sampleBb.data, getColor(sampleBb.data, colors), Lang.format("$1$", [sampleBb.data.format("%d"),])]);
                 }
                 catch( ex ) {
-                    array.add([null, getColor(0, colors)]);
+                    array.add([null, null]);
                 }
             }
             sampleBb = bbIterator.next();
@@ -262,17 +272,22 @@ class MinimalHeartiew extends MinimalView {
         var heartRateZones = UserProfile.getHeartRateZones(0);
         var colors = [[heartRateZones[4], Graphics.COLOR_RED], [heartRateZones[3], Graphics.COLOR_ORANGE], [heartRateZones[2], Graphics.COLOR_GREEN], [70, Graphics.COLOR_BLUE], [50, Graphics.COLOR_LT_GRAY]];
         var delta = (heartRateZones[5] -20) /100;
-        while (valueHeart != null) {
-            if (item % 3 == 0) {
-                try {
-                    array.add([(valueHeart.data -20)/delta, getColor(valueHeart.data, colors)]); //max heart 200 bpm  
+        try {
+            while (valueHeart != null) {
+                if (item % 2 == 0) {
+                    try {
+                        array.add([(valueHeart.data -20)/delta, getColor(valueHeart.data, colors), Lang.format("$1$", [valueHeart.data.format("%d"),])]); //max heart 200 bpm  
+                    }
+                    catch( ex ) {
+                        array.add([null, null, ""]);
+                    }
                 }
-                catch( ex ) {
-                    array.add([null, getColor(0, colors)]);
-                }
+                valueHeart = heartIterator.next();
+                item = item +1;
             }
-            valueHeart = heartIterator.next();
-            item = item +1;
+        }
+        catch( ex ) {
+            array = [];
         }
         var unit = "Bpm";
         var logo = "5";
