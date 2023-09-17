@@ -254,7 +254,7 @@ class MinimalHeartiew extends MinimalView {
         // Call the parent onUpdate function to redraw the layout
         var info = Activity.getActivityInfo();
         var valueHeart = info.currentHeartRate;
-        var str = Lang.format("$1$", [valueHeart.data.format("%d"),]);
+        var str = Lang.format("$1$", [valueHeart,]);
         var value = valueHeart;
         if (valueHeart == null){
             value = 0;
