@@ -188,7 +188,7 @@ class MinimalBbView extends MinimalView {
                     array.add([sampleBb.data, getColor(sampleBb.data, colors), Lang.format("$1$", [sampleBb.data.format("%d"),])]);
                 }
                 catch( ex ) {
-                    array.add([null, null]);
+                    // todo
                 }
             }
             sampleBb = bbIterator.next();
@@ -254,8 +254,6 @@ class MinimalHeartiew extends MinimalView {
         // Call the parent onUpdate function to redraw the layout
         var info = Activity.getActivityInfo();
         var valueHeart = info.currentHeartRate;
-        //var heartIterator = getIteratorHeart();
-        //var valueHeart = heartIterator.next();
         var str = valueHeart;
         var value = valueHeart;
         if (valueHeart == null){
@@ -265,25 +263,27 @@ class MinimalHeartiew extends MinimalView {
             value = valueHeart /2; //max heart 200 bpm        
         }
         var color = Graphics.COLOR_RED;
-        var heartIterator = getIteratorHeart();
-        valueHeart = heartIterator.next();
         var array = [];
-        var item = 0;
-        var heartRateZones = UserProfile.getHeartRateZones(0);
-        var colors = [[heartRateZones[4], Graphics.COLOR_RED], [heartRateZones[3], Graphics.COLOR_ORANGE], [heartRateZones[2], Graphics.COLOR_GREEN], [70, Graphics.COLOR_BLUE], [50, Graphics.COLOR_LT_GRAY]];
-        var delta = (heartRateZones[5] -20) /100;
         try {
-            while (valueHeart != null) {
-                if (item % 2 == 0) {
-                    try {
-                        array.add([(valueHeart.data -20)/delta, getColor(valueHeart.data, colors), Lang.format("$1$", [valueHeart.data.format("%d"),])]); //max heart 200 bpm  
-                    }
-                    catch( ex ) {
-                        array.add([null, null, ""]);
-                    }
-                }
+            var heartIterator = getIteratorHeart();
+            if (heartIterator != null) {
                 valueHeart = heartIterator.next();
-                item = item +1;
+                var item = 0;
+                var heartRateZones = UserProfile.getHeartRateZones(0);
+                var colors = [[heartRateZones[4], Graphics.COLOR_RED], [heartRateZones[3], Graphics.COLOR_ORANGE], [heartRateZones[2], Graphics.COLOR_GREEN], [70, Graphics.COLOR_BLUE], [50, Graphics.COLOR_LT_GRAY]];
+                var delta = (heartRateZones[5] -20) /100;
+                while (valueHeart != null) {
+                    if (item % 2 == 0) {
+                        try {
+                            array.add([(valueHeart.data -20)/delta, getColor(valueHeart.data, colors), Lang.format("$1$", [valueHeart.data.format("%d"),])]); //max heart 200 bpm  
+                        }
+                        catch( ex ) {
+                            // todo
+                        }
+                    }
+                    valueHeart = heartIterator.next();
+                    item = item +1;
+                }
             }
         }
         catch( ex ) {
