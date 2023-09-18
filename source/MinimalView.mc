@@ -62,7 +62,11 @@ class MinimalView extends WatchUi.View {
             lineColor(dc, color, value, 270, Math.toDegrees(Math.asin((sizeFont/2 -20) *1.0/ (dc.getHeight()/2 -15))), dc.getHeight()/2 -15, 10);
         } else {
             lineColor(dc, color, value, 180, Math.toDegrees(Math.asin((sizeFont/2 -20) *1.0/ (dc.getHeight()/2 -15))), dc.getHeight()/2 -15, 10);
-            drawGraph(dc, dc.getWidth()/4, dc.getHeight()* 5/8, dc.getWidth()/2, dc.getHeight()* 1/4, table, 0, 100);
+            try {
+                drawGraph(dc, dc.getWidth()/4, dc.getHeight()* 5/8, dc.getWidth()/2, dc.getHeight()* 1/4, table, 0, 100);
+            } catch( ex ) {
+                // todo
+            }
         }
     }
 
