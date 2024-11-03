@@ -256,18 +256,23 @@ class MinimalHeartiew extends MinimalView {
     // Update the view
     function onUpdate(dc as Dc) as Void {
         // Call the parent onUpdate function to redraw the layout
+        var color = Graphics.COLOR_RED;
+        var unit = "Bpm";
+        var logo = "5";
+        var array = [];
+        System.println("start heart");
         var info = Activity.getActivityInfo();
         var valueHeart = info.currentHeartRate;
         var str = Lang.format("$1$", [valueHeart,]);
         var value = valueHeart;
+        System.println(str);
         if (valueHeart == null){
             value = 0;
             str = "--";
         } else {
             value = valueHeart /2; //max heart 200 bpm        
         }
-        var color = Graphics.COLOR_RED;
-        var array = [];
+        System.println(str);
         try {
             var heartIterator = getIteratorHeart();
             if (heartIterator != null) {
@@ -293,8 +298,6 @@ class MinimalHeartiew extends MinimalView {
         catch( ex ) {
             array = [];
         }
-        var unit = "Bpm";
-        var logo = "5";
         View.onUpdate(dc);
         viewMonitor(dc, unit, value, str, color, logo, array);
     }
